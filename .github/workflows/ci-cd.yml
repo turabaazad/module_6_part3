@@ -92,11 +92,13 @@ jobs:
           # ---- Git identity & credentials
           git config --global user.name  "GitHub Actions"
           git config --global user.email "actions@github.com"
-         
+          git config --global credential.helper store
+          printf "https://%s:x-oauth-basic@github.com\n" "$GIT_TOKEN" > ~/.git-credentials
+
           # ---- Clone or init GitOps repo
           workdir="$(mktemp -d)"
           echo "Cloning GitOps repo ${GITOPS_REPO} ..."
-          if git clone "https://x-access-token:${GIT_TOKEN}@github.com/${GITOPS_REPO}.git" "$workdir/gitops"; then
+          if git clone "https://github.com/${GITOPS_REPO}.git" "$workdir/gitops"; then
             cd "$workdir/gitops"
           else
             echo "Repo not found or no access, initializing new repository structure..."
@@ -164,6 +166,5 @@ jobs:
           fi
 
           git remote remove origin >/dev/null 2>&1 || true
-          git remote add origin "https://x-access-token:${GIT_TOKEN}@github.com/${GITOPS_REPO}.git"
+          git remote add origin "https://${GIT_TOKEN}@github.com/${GITOPS_REPO}.git"
           git push -u origin "${TARGET_BRANCH}"
-

@@ -84,7 +84,7 @@ jobs:
           OWNER: ${{ github.repository_owner }}
           APP_REPO: ${{ github.event.repository.name }}
           GITOPS_REPO: ${{ secrets.GITOPS_REPO }}   # e.g., "yourname/your-gitops-repo"
-          GIT_TOKEN: ${{ secrets.CR_PAT }}      # PAT with repo scope
+          GIT_TOKEN: ${{ secrets.GITOPS_PAT }}      # PAT with repo scope
           TARGET_BRANCH: ${{ env.TARGET_BRANCH }}
         run: |
           set -euo pipefail
